@@ -5,6 +5,8 @@ package com.starterkit.library;
 
 import java.util.ResourceBundle;
 
+import com.starterkit.library.RESTServiceClient.RestServiceClient;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -31,7 +33,7 @@ public class Startup extends Application {
 		// TODO Auto-generated method stub
 		primaryStage.setTitle("Library");
 
-		Parent root = FXMLLoader.load(getClass().getResource("/com/starterkit/library/view/library.fxml"), //
+		Parent root = FXMLLoader.load(getClass().getResource("/com/starterkit/library/view/library.fxml"),
 				ResourceBundle.getBundle("com/starterkit/library/bundle/base"));
 		Scene scene = new Scene(root);
 

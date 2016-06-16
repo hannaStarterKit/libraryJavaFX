@@ -6,7 +6,7 @@ package com.starterkit.library.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.starterkit.library.data.BookVO;
+import com.starterkit.library.booksProvider.data.BookVO;
 
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.ObjectProperty;

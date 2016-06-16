@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.starterkit.library.data;
+package com.starterkit.library.booksProvider.data;
 
 /**
  * @author HSIENKIE
