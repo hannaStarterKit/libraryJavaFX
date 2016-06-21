@@ -36,7 +36,7 @@ public class RestServiceClient {
 	}
 
 	public List<BookTo> findBooks(String title, String authors, String status) {
-		LOG.debug("Entering findBooks() client");
+		LOG.debug("Entering findBooks() in client");
 		WebResource webResource = client.resource("http://localhost:8080/webstore/findBooks").queryParam("title", title)
 				.queryParam("author", authors).queryParam("status", status);
 		ClientResponse response = webResource.accept("application/json").get(ClientResponse.class);
@@ -46,8 +46,19 @@ public class RestServiceClient {
 			throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
 		}
 		LOG.debug(response);
-//		String books = response.getEntity(String.class);
-//		return BookMapper.jsonToBookTo(books);
+//		return BookMapper.jsonToBookTo(response.getEntity(String.class));
+		LOG.debug("Leaving findBooks() in client");
 		return books;
+	}
+	
+	public void addBook(BookTo bookToSave) {
+		LOG.debug("Entering addBook() in client");
+		WebResource webResource = client.resource("http://localhost:8080/webstore/book");
+		ClientResponse response = webResource.type("application/json").put(ClientResponse.class, bookToSave);
+		if (response.getStatus() != 200) {
+			throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+		}
+		LOG.debug(response);
+		LOG.debug("Leaving addBook() in client");
 	}
 }

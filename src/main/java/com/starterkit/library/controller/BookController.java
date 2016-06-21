@@ -14,10 +14,11 @@ import com.starterkit.library.booksProvider.BookProvider;
 import com.starterkit.library.booksProvider.data.BookTo;
 import com.starterkit.library.booksProvider.data.BookStatus;
 
-
 import com.starterkit.library.model.BookSearch;
 import com.starterkit.library.model.Status;
 
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.value.ObservableValue;
@@ -71,7 +72,7 @@ public class BookController {
 	 */
 	@FXML
 	private TextField titleField;
-	
+
 	@FXML
 	private TextField authorsField;
 
@@ -80,6 +81,9 @@ public class BookController {
 
 	@FXML
 	private Button searchButton;
+
+	@FXML
+	private Button addButton;
 
 	@FXML
 	private TableView<BookTo> resultTable;
@@ -94,7 +98,7 @@ public class BookController {
 	private TableColumn<BookTo, String> authorsColumn;
 
 	private final BookSearch model = new BookSearch();
-	
+
 	private final BookProvider bookProvider = new BookProvider();
 
 	public BookController() {
@@ -141,8 +145,10 @@ public class BookController {
 		 * Make the Search button inactive when the Title field is empty.
 		 */
 		searchButton.disableProperty().bind(titleField.textProperty().isEmpty());
+		addButton.disableProperty().bind(Bindings.or(titleField.textProperty().isEmpty(), Bindings
+				.or(authorsField.textProperty().isEmpty(), statusField.valueProperty().isEqualTo(Status.ANY))));
 	}
-	
+
 	private void initializeStatusField() {
 		/*
 		 * Add items to the list in combo box.
@@ -216,37 +222,6 @@ public class BookController {
 		 * Show specific text for an empty table. This can also be done in FXML.
 		 */
 		resultTable.setPlaceholder(new Label(resources.getString("table.emptyText")));
-
-		// /*
-		// * When table's row gets selected say given person's name.
-		// */
-		// resultTable.getSelectionModel().selectedItemProperty().addListener(new
-		// ChangeListener<BookTo>() {
-		//
-		// @Override
-		// public void changed(ObservableValue<? extends BookTo> observable,
-		// BookTo oldValue, BookTo newValue) {
-		// LOG.debug(newValue + " selected");
-		//
-		// if (newValue != null) {
-		// Task<Void> backgroundTask = new Task<Void>() {
-		//
-		// @Override
-		// protected Void call() throws Exception {
-		// speaker.say(newValue.getName());
-		// return null;
-		// }
-		//
-		// @Override
-		// protected void failed() {
-		// LOG.error("Could not say name: " + newValue.getName(),
-		// getException());
-		// }
-		// };
-		// new Thread(backgroundTask).start();
-		// }
-		// }
-		// });
 	}
 
 	/**
@@ -273,8 +248,8 @@ public class BookController {
 		/**
 		 * This implementation is correct.
 		 * <p>
-		 * The {@link BookProvider#findBooks(String, String, StatusVO)} call is executed
-		 * in a background thread.
+		 * The {@link BookProvider#findBooks(String, String, StatusVO)} call is
+		 * executed in a background thread.
 		 * </p>
 		 */
 		/*
@@ -328,6 +303,60 @@ public class BookController {
 				 * Reset sorting in the result table.
 				 */
 				resultTable.getSortOrder().clear();
+			}
+		};
+
+		/*
+		 * Start the background task. In real life projects some framework
+		 * manages background tasks. You should never create a thread on your
+		 * own.
+		 */
+		new Thread(backgroundTask).start();
+
+	}
+
+	@FXML
+	private void addButtonAction(ActionEvent event) {
+		LOG.debug("'Add' button clicked");
+		/**
+		 * This implementation is correct.
+		 * <p>
+		 * The {@link BookProvider#findBooks(String, String, StatusVO)} call is
+		 * executed in a background thread.
+		 * </p>
+		 */
+		/*
+		 * Use task to execute the potentially long running call in background
+		 * (separate thread), so that the JavaFX Application Thread is not
+		 * blocked.
+		 */
+		Task<Collection<Void>> backgroundTask = new Task<Collection<Void>>() {
+
+			/**
+			 * This method will be executed in a background thread.
+			 */
+			@Override
+			protected Collection<Void> call() {
+				LOG.debug("call() called");
+
+				/*
+				 * Get the data.
+				 */
+				bookProvider.addBook( //
+						model.getTitle(), //
+						model.getAuthors(), //
+						model.getStatus().toBookStatus());
+				return null;
+
+			}
+
+			/**
+			 * This method will be executed in the JavaFX Application Thread
+			 * when the task finishes.
+			 */
+			@Override
+			protected void succeeded() {
+				LOG.debug("succeeded() called");
 			}
 		};
 
