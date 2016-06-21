@@ -3,7 +3,7 @@
  */
 package com.starterkit.library.model;
 
-import com.starterkit.library.booksProvider.data.StatusVO;
+import com.starterkit.library.booksProvider.data.BookStatus;
 
 /**
  * @author HSIENKIE
@@ -13,15 +13,15 @@ public enum Status {
 
 	ANY, FREE, LOAN, MISSING;
 
-	public static Status fromStatusVO(StatusVO status) {
+	public static Status fromBookStatus(BookStatus status) {
 		return Status.valueOf(status.name());
 	}
 
-	public StatusVO toStatusVO() {
+	public BookStatus toBookStatus() {
 		if (this == ANY) {
 			return null;
 		}
-		return StatusVO.valueOf(this.name());
+		return BookStatus.valueOf(this.name());
 	}
 
 }

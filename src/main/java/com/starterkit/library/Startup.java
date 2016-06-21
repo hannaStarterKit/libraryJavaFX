@@ -5,8 +5,6 @@ package com.starterkit.library;
 
 import java.util.ResourceBundle;
 
-import com.starterkit.library.RESTServiceClient.RestServiceClient;
-
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

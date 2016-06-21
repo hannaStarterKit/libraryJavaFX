@@ -7,7 +7,7 @@ package com.starterkit.library.booksProvider.data;
  * @author HSIENKIE
  *
  */
-public enum StatusVO {
+public enum BookStatus {
 	
 	FREE, LOAN, MISSING;
 }

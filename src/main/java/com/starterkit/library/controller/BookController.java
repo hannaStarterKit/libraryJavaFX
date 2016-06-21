@@ -11,17 +11,15 @@ import java.util.ResourceBundle;
 import org.apache.log4j.Logger;
 
 import com.starterkit.library.booksProvider.BookProvider;
-import com.starterkit.library.booksProvider.data.BookVO;
-import com.starterkit.library.booksProvider.data.StatusVO;
+import com.starterkit.library.booksProvider.data.BookTo;
+import com.starterkit.library.booksProvider.data.BookStatus;
 
-import org.apache.log4j.Logger;
 
 import com.starterkit.library.model.BookSearch;
 import com.starterkit.library.model.Status;
 
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -84,16 +82,16 @@ public class BookController {
 	private Button searchButton;
 
 	@FXML
-	private TableView<BookVO> resultTable;
+	private TableView<BookTo> resultTable;
 
 	@FXML
-	private TableColumn<BookVO, String> titleColumn;
+	private TableColumn<BookTo, String> titleColumn;
 
 	@FXML
-	private TableColumn<BookVO, String> statusColumn;
+	private TableColumn<BookTo, String> statusColumn;
 
 	@FXML
-	private TableColumn<BookVO, String> authorsColumn;
+	private TableColumn<BookTo, String> authorsColumn;
 
 	private final BookSearch model = new BookSearch();
 	
@@ -197,18 +195,18 @@ public class BookController {
 
 	private void initializeResultTable() {
 		/*
-		 * Define what properties of BookVO will be displayed in different
+		 * Define what properties of BookTo will be displayed in different
 		 * columns.
 		 */
 		titleColumn.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getTitle()));
 		// titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
 		statusColumn.setCellValueFactory(
-				new Callback<TableColumn.CellDataFeatures<BookVO, String>, ObservableValue<String>>() {
+				new Callback<TableColumn.CellDataFeatures<BookTo, String>, ObservableValue<String>>() {
 
 					@Override
-					public ObservableValue<String> call(CellDataFeatures<BookVO, String> param) {
-						StatusVO status = param.getValue().getStatus();
-						String text = getInternationalizedText(Status.fromStatusVO(status));
+					public ObservableValue<String> call(CellDataFeatures<BookTo, String> param) {
+						BookStatus status = param.getValue().getStatus();
+						String text = getInternationalizedText(Status.fromBookStatus(status));
 						return new ReadOnlyStringWrapper(text);
 					}
 				});
@@ -223,11 +221,11 @@ public class BookController {
 		// * When table's row gets selected say given person's name.
 		// */
 		// resultTable.getSelectionModel().selectedItemProperty().addListener(new
-		// ChangeListener<BookVO>() {
+		// ChangeListener<BookTo>() {
 		//
 		// @Override
-		// public void changed(ObservableValue<? extends BookVO> observable,
-		// BookVO oldValue, BookVO newValue) {
+		// public void changed(ObservableValue<? extends BookTo> observable,
+		// BookTo oldValue, BookTo newValue) {
 		// LOG.debug(newValue + " selected");
 		//
 		// if (newValue != null) {
@@ -275,7 +273,7 @@ public class BookController {
 		/**
 		 * This implementation is correct.
 		 * <p>
-		 * The {@link BookProvider#findBooks(String, StatusVO)} call is executed
+		 * The {@link BookProvider#findBooks(String, String, StatusVO)} call is executed
 		 * in a background thread.
 		 * </p>
 		 */
@@ -284,22 +282,22 @@ public class BookController {
 		 * (separate thread), so that the JavaFX Application Thread is not
 		 * blocked.
 		 */
-		Task<Collection<BookVO>> backgroundTask = new Task<Collection<BookVO>>() {
+		Task<Collection<BookTo>> backgroundTask = new Task<Collection<BookTo>>() {
 
 			/**
 			 * This method will be executed in a background thread.
 			 */
 			@Override
-			protected Collection<BookVO> call() throws Exception {
+			protected Collection<BookTo> call() throws Exception {
 				LOG.debug("call() called");
 
 				/*
 				 * Get the data.
 				 */
-				Collection<BookVO> result = bookProvider.findBooks( //
+				Collection<BookTo> result = bookProvider.findBooks( //
 						model.getTitle(), //
 						model.getAuthors(), //
-						model.getStatus().toStatusVO());
+						model.getStatus().toBookStatus());
 
 				/*
 				 * Value returned from this method is stored as a result of task
@@ -319,12 +317,12 @@ public class BookController {
 				/*
 				 * Get result of the task execution.
 				 */
-				Collection<BookVO> result = getValue();
+				Collection<BookTo> result = getValue();
 
 				/*
 				 * Copy the result to model.
 				 */
-				model.setResult(new ArrayList<BookVO>(result));
+				model.setResult(new ArrayList<BookTo>(result));
 
 				/*
 				 * Reset sorting in the result table.

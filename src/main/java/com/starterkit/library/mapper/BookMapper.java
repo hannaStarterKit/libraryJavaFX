@@ -7,24 +7,24 @@ import java.util.List;
 import org.json.simple.JSONArray;
 import org.json.simple.parser.ParseException;
 
-import com.starterkit.library.booksProvider.data.BookVO;
-import com.starterkit.library.booksProvider.data.StatusVO;
+import com.starterkit.library.booksProvider.data.BookTo;
+import com.starterkit.library.booksProvider.data.BookStatus;
 
 import org.json.simple.parser.JSONParser;
 
 public class BookMapper {
 
-	static JSONParser parser = new JSONParser();
+	final static JSONParser parser = new JSONParser();
 	
-	public static List<BookVO> jsonToBookVO(String text){
+	public static List<BookTo> jsonToBookTo(String text){
 		Object object;
-		List<BookVO> booksVO = new ArrayList<>();
+		List<BookTo> booksVO = new ArrayList<>();
 		try {
 			object = parser.parse(text);
 			JSONArray array = (JSONArray)object;
 			for (int i = 0; i < array.size(); i++) {
 				JSONObject bookJSON = (JSONObject)array.get(i);
-				BookVO book = new BookVO((String) bookJSON.get("title"),(String) bookJSON.get("authors"), StatusVO.valueOf((String) bookJSON.get("status")));
+				BookTo book = new BookTo((Long) bookJSON.get("id"), (String) bookJSON.get("title"),(String) bookJSON.get("authors"), BookStatus.valueOf((String) bookJSON.get("status")));
 				booksVO.add(book);
 			}
 		} catch (ParseException e) {

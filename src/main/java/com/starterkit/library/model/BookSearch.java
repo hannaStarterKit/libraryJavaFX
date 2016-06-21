@@ -6,7 +6,7 @@ package com.starterkit.library.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.starterkit.library.booksProvider.data.BookVO;
+import com.starterkit.library.booksProvider.data.BookTo;
 
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.ObjectProperty;
@@ -25,7 +25,7 @@ public class BookSearch {
 	private final StringProperty title = new SimpleStringProperty();
 	private final StringProperty authors = new SimpleStringProperty();
 	private final ObjectProperty<Status> status = new SimpleObjectProperty<>();
-	private final ListProperty<BookVO> result = new SimpleListProperty<>(
+	private final ListProperty<BookTo> result = new SimpleListProperty<>(
 			FXCollections.observableList(new ArrayList<>()));
 
 	public final String getTitle() {
@@ -64,15 +64,15 @@ public class BookSearch {
 		return status;
 	}
 
-	public final List<BookVO> getResult() {
+	public final List<BookTo> getResult() {
 		return result.get();
 	}
 
-	public final void setResult(List<BookVO> value) {
+	public final void setResult(List<BookTo> value) {
 		result.setAll(value);
 	}
 
-	public ListProperty<BookVO> resultProperty() {
+	public ListProperty<BookTo> resultProperty() {
 		return result;
 	}
 
