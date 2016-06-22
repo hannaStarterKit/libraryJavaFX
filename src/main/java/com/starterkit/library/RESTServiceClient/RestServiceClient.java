@@ -3,7 +3,6 @@
  */
 package com.starterkit.library.RESTServiceClient;
 
-
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -27,9 +26,9 @@ public class RestServiceClient {
 	private static final Logger LOG = Logger.getLogger(RestServiceClient.class);
 
 	private ClientConfig clientConfig = new DefaultClientConfig();
-	
+
 	private Client client;
-	
+
 	public RestServiceClient() {
 		clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
 		client = Client.create(clientConfig);
@@ -40,17 +39,18 @@ public class RestServiceClient {
 		WebResource webResource = client.resource("http://localhost:8080/webstore/findBooks").queryParam("title", title)
 				.queryParam("author", authors).queryParam("status", status);
 		ClientResponse response = webResource.accept("application/json").get(ClientResponse.class);
-		List<BookTo> books = webResource.get(new GenericType<List<BookTo>>() {});
+		List<BookTo> books = webResource.get(new GenericType<List<BookTo>>() {
+		});
 
 		if (response.getStatus() != 200) {
 			throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
 		}
-		LOG.debug(response);
-//		return BookMapper.jsonToBookTo(response.getEntity(String.class));
+		LOG.debug("Response: " + response);
+		// return BookMapper.jsonToBookTo(response.getEntity(String.class));
 		LOG.debug("Leaving findBooks() in client");
 		return books;
 	}
-	
+
 	public BookTo addBook(BookTo bookToSave) {
 		LOG.debug("Entering addBook() in client");
 		WebResource webResource = client.resource("http://localhost:8080/webstore/book");
@@ -58,7 +58,7 @@ public class RestServiceClient {
 		if (response.getStatus() != 200) {
 			throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
 		}
-		LOG.debug(response);
+		LOG.debug("Response: " + response);
 		LOG.debug("Leaving addBook() in client");
 		return response.getEntity(BookTo.class);
 	}

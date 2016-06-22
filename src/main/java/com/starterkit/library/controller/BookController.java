@@ -334,7 +334,7 @@ public class BookController {
 			 * This method will be executed in a background thread.
 			 */
 			@Override
-			protected BookTo call() {
+			protected BookTo call() throws Exception {
 				LOG.debug("call() called");
 
 				/*
