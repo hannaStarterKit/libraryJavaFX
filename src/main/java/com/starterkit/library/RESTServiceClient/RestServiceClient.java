@@ -51,14 +51,15 @@ public class RestServiceClient {
 		return books;
 	}
 	
-	public void addBook(BookTo bookToSave) {
+	public BookTo addBook(BookTo bookToSave) {
 		LOG.debug("Entering addBook() in client");
 		WebResource webResource = client.resource("http://localhost:8080/webstore/book");
-		ClientResponse response = webResource.type("application/json").put(ClientResponse.class, bookToSave);
+		ClientResponse response = webResource.type("application/json").post(ClientResponse.class, bookToSave);
 		if (response.getStatus() != 200) {
 			throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
 		}
 		LOG.debug(response);
 		LOG.debug("Leaving addBook() in client");
+		return response.getEntity(BookTo.class);
 	}
 }

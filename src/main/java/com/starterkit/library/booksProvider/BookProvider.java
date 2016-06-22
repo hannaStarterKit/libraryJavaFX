@@ -35,10 +35,11 @@ public class BookProvider {
 		return result;
 	}
 	
-	public void addBook(String title, String authors, BookStatus statusVO) {
+	public BookTo addBook(String title, String authors, BookStatus statusVO) {
 		LOG.debug("Entering addBook()");
-		restServiceClinet.addBook(new BookTo(null, title, authors, statusVO));
+		BookTo result = restServiceClinet.addBook(new BookTo(null, title, authors, statusVO));
 		LOG.debug("Leaving addBoos()");
+		return result;
 	}
 
 }

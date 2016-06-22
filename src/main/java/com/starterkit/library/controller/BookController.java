@@ -18,7 +18,6 @@ import com.starterkit.library.model.BookSearch;
 import com.starterkit.library.model.Status;
 
 import javafx.beans.binding.Bindings;
-import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.value.ObservableValue;
@@ -205,7 +204,6 @@ public class BookController {
 		 * columns.
 		 */
 		titleColumn.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getTitle()));
-		// titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
 		statusColumn.setCellValueFactory(
 				new Callback<TableColumn.CellDataFeatures<BookTo, String>, ObservableValue<String>>() {
 
@@ -330,24 +328,23 @@ public class BookController {
 		 * (separate thread), so that the JavaFX Application Thread is not
 		 * blocked.
 		 */
-		Task<Collection<Void>> backgroundTask = new Task<Collection<Void>>() {
+		Task<BookTo> backgroundTask = new Task<BookTo>()  {
 
 			/**
 			 * This method will be executed in a background thread.
 			 */
 			@Override
-			protected Collection<Void> call() {
+			protected BookTo call() {
 				LOG.debug("call() called");
 
 				/*
-				 * Get the data.
+				 * Add the data.
 				 */
-				bookProvider.addBook( //
+				BookTo result = bookProvider.addBook( //
 						model.getTitle(), //
 						model.getAuthors(), //
 						model.getStatus().toBookStatus());
-				return null;
-
+				return result;
 			}
 
 			/**
@@ -357,6 +354,7 @@ public class BookController {
 			@Override
 			protected void succeeded() {
 				LOG.debug("succeeded() called");
+				LOG.debug("Add book: " + getValue().toString());
 			}
 		};
 
