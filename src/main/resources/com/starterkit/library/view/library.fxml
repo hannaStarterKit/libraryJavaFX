@@ -28,6 +28,7 @@
     </children>
   </GridPane>
   <Button fx:id="searchButton" defaultButton="true" layoutX="14.0" layoutY="182.0" mnemonicParsing="false" onAction="#searchButtonAction" prefHeight="40.0" prefWidth="123.0" text="%button.search" />
+  <!-- REV: Tylko jeden przycisk powinien byc domyslny -->
   <Button fx:id="addButton" defaultButton="true" layoutX="365.0" layoutY="182.0" mnemonicParsing="false" onAction="#addButtonAction" prefHeight="40.0" prefWidth="123.0" text="%button.add" />
   <TableView fx:id="resultTable" layoutX="14.0" layoutY="232.0" prefHeight="208.0" prefWidth="474.0">
     <placeholder>

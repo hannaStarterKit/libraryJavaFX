@@ -14,6 +14,7 @@ import com.starterkit.library.booksProvider.data.BookStatus;
  * @author HSIENKIE
  *
  */
+// REV: brak interfejsu
 public class BookProvider {
 
 	private static final Logger LOG = Logger.getLogger(BookProvider.class);

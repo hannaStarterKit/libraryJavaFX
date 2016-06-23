@@ -12,8 +12,10 @@ import com.starterkit.library.booksProvider.data.BookStatus;
 
 import org.json.simple.parser.JSONParser;
 
+// REV: ta klasa nie jest wykorzystywana
 public class BookMapper {
 
+	// REV: nie polecam uzywac static'ow
 	final static JSONParser parser = new JSONParser();
 	
 	public static List<BookTo> jsonToBookTo(String text){

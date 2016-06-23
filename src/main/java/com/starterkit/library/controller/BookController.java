@@ -302,6 +302,8 @@ public class BookController {
 				 */
 				resultTable.getSortOrder().clear();
 			}
+			
+			// REV: BookProvider rzuca wyjatki, ktorych nie obslugujesz w tasku
 		};
 
 		/*
@@ -356,6 +358,8 @@ public class BookController {
 				LOG.debug("succeeded() called");
 				LOG.debug("Add book: " + getValue().toString());
 			}
+			
+			// REV: j.w.
 		};
 
 		/*

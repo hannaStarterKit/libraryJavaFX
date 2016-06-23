@@ -36,8 +36,10 @@ public class RestServiceClient {
 
 	public List<BookTo> findBooks(String title, String authors, String status) {
 		LOG.debug("Entering findBooks() in client");
+		// REV: adres serwera powinien byc pobrany z konfiguracji
 		WebResource webResource = client.resource("http://localhost:8080/webstore/findBooks").queryParam("title", title)
 				.queryParam("author", authors).queryParam("status", status);
+		// REV: wywolujesz serwis RESTowy dwa razy i sprawdzasz response code dla pierwszego wywolania
 		ClientResponse response = webResource.accept("application/json").get(ClientResponse.class);
 		List<BookTo> books = webResource.get(new GenericType<List<BookTo>>() {
 		});
@@ -53,6 +55,7 @@ public class RestServiceClient {
 
 	public BookTo addBook(BookTo bookToSave) {
 		LOG.debug("Entering addBook() in client");
+		// REV: j.w.
 		WebResource webResource = client.resource("http://localhost:8080/webstore/book");
 		ClientResponse response = webResource.type("application/json").post(ClientResponse.class, bookToSave);
 		if (response.getStatus() != 200) {
