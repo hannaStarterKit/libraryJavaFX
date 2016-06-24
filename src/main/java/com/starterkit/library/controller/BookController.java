@@ -203,7 +203,9 @@ public class BookController {
 		 * Define what properties of BookTo will be displayed in different
 		 * columns.
 		 */
+		//cellData.getValue() returns the BookTo instance for a particular TableView row
 		titleColumn.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getTitle()));
+		
 		statusColumn.setCellValueFactory(
 				new Callback<TableColumn.CellDataFeatures<BookTo, String>, ObservableValue<String>>() {
 
